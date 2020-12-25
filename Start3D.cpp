@@ -20,47 +20,47 @@ int main()
 	uintptr_t StereoscopicAddr;
 
 
-		GameWindow = ::FindWindowExA(0, 0, "TR2NxApp", 0); // Tomb Raider Window Class Name 
-		while ((GameWindow == NULL) & (kez <= 60))
+	GameWindow = ::FindWindowExA(0, 0, "TR2NxApp", 0); // Tomb Raider Window Class Name 
+	while ((GameWindow == NULL) & (kez <= 60))
+	{
+		Sleep(1000);
+		GameWindow = ::FindWindowExA(0, 0, "TR2NxApp", 0);
+		kez++;
+		if (kez == 60)
 		{
-			Sleep(1000);
-			GameWindow = ::FindWindowExA(0, 0, "TR2NxApp", 0);
-			kez++;
-			if (kez == 60)
-			{
-				MessageBox(nullptr, TEXT("Rise of the Tomb Raider uninitialized. \nPlease start the game first !!!"), TEXT("WARNING : Enabling 3D Vision"), MB_SYSTEMMODAL | MB_ICONEXCLAMATION | MB_OK);
-				return 0;
-			}
-
-		}
-
-		HWND LauncherMenu = FindWindowA("TR2NxApp", "Rise of the Tomb Raider"); // Rise of the Tomb Raider: Launcher Menu
-		if (LauncherMenu != NULL)
-		{
-			//Get ProcId of the target process
-			procId = GetProcId(L"ROTTR.exe");  //Rise of the Tomb Raider 
-			moduleBase = GetModuleBaseAddress(procId, L"ROTTR.exe");
-			//Get Handle to Process
-			hProcess = 0;
-			hProcess = OpenProcess(PROCESS_ALL_ACCESS, NULL, procId);
-
-			// Rise of the Tomb Raider: Launcher Menu //Options//Stereoscopic 3D: ON
-			dynamicPtrBaseAddr = moduleBase + 0x1066B80;
-			StereoscopicOffsets = { 0x148, 0x20, 0x90 };
-			StereoscopicAddr = FindDMAAddy(hProcess, dynamicPtrBaseAddr, StereoscopicOffsets);
-
-			Stereoscopic = 2;
-			WriteProcessMemory(hProcess, (BYTE*)StereoscopicAddr, &Stereoscopic, sizeof(Stereoscopic), nullptr);
-
+			MessageBox(nullptr, TEXT("Rise of the Tomb Raider uninitialized. \nPlease start the game first !!!"), TEXT("WARNING : Enabling 3D Vision"), MB_SYSTEMMODAL | MB_ICONEXCLAMATION | MB_OK);
 			return 0;
 		}
+
+	}
+
+	HWND LauncherMenu = FindWindowA("TR2NxApp", "Rise of the Tomb Raider"); // Rise of the Tomb Raider: Launcher Menu
+	if (LauncherMenu != NULL)
+	{
+		//Get ProcId of the target process
+		procId = GetProcId(L"ROTTR.exe");  //Rise of the Tomb Raider 
+		moduleBase = GetModuleBaseAddress(procId, L"ROTTR.exe");
+		//Get Handle to Process
+		hProcess = 0;
+		hProcess = OpenProcess(PROCESS_ALL_ACCESS, NULL, procId);
+
+		// Rise of the Tomb Raider: Launcher Menu //Options//Stereoscopic 3D: ON
+		dynamicPtrBaseAddr = moduleBase + 0x1066B80;
+		StereoscopicOffsets = { 0x148, 0x20, 0x90 };
+		StereoscopicAddr = FindDMAAddy(hProcess, dynamicPtrBaseAddr, StereoscopicOffsets);
+
+		Stereoscopic = 2;
+		WriteProcessMemory(hProcess, (BYTE*)StereoscopicAddr, &Stereoscopic, sizeof(Stereoscopic), nullptr);
+
+		return 0;
+	}
 
 	
 
 	Sleep(5000);
 
 	//Get ProcId of the target process
-    procId = GetProcId(L"ROTTR.exe");  //Tomb Raider 
+        procId = GetProcId(L"ROTTR.exe");  //Tomb Raider 
 	moduleBase = GetModuleBaseAddress(procId, L"ROTTR.exe");
 
 	hProcess = 0;
