@@ -57,7 +57,7 @@ int main()
 
 	
 
-	Sleep(5000);
+	Sleep(5000); //  if ROTTR.exe start parameters "-nolouncher" 
 
 	//Get ProcId of the target process
         procId = GetProcId(L"ROTTR.exe");  //Tomb Raider 
